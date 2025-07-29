@@ -88,5 +88,16 @@
   "map": "الخريطة",
   "love": "المفضلة",
   "profile": "الملف الشخصي",
-  "favorites": "المفضلة"
+  "favorites": "المفضلة",
+  "welcome_back": "اهلا بعودتك✨",
+  "meeting": "اجتماع",
+  "gaming": "ألعاب",
+  "workshop": "ورشة عمل",
+  "exhibition": "معرض",
+  "holiday": "عطلة",
+  "eating": "تناول الطعام",
+  "all": "الكل",
+  "search_for_event": "البحث عن حدث",
+  "or": "أو"
+
 }

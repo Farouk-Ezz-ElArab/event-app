@@ -1,10 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:event_app/ui/home/tabs/favorite_tab/favorite_tap.dart';
 import 'package:event_app/ui/home/tabs/home_tab/home_tab.dart';
 import 'package:event_app/ui/home/tabs/map_tab/map_tap.dart';
 import 'package:event_app/ui/home/tabs/profile_tab/profile_tab.dart';
 import 'package:event_app/utils/app_assets.dart';
 import 'package:event_app/utils/app_colors.dart';
+import 'package:event_app/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
@@ -65,7 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, AppRoutes.addEventScreenRouteName);
+        },
         child: Icon(Icons.add, size: 35, color: AppColors.whiteColor, ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

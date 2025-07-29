@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -270,4 +271,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favorites => 'Favorites';
+
+  @override
+  String get welcome_back => 'Welcome Back✨';
+
+  @override
+  String get meeting => 'Meeting';
+
+  @override
+  String get gaming => 'Gaming';
+
+  @override
+  String get workshop => 'WorkShop';
+
+  @override
+  String get exhibition => 'Exhibition';
+
+  @override
+  String get holiday => 'Holiday';
+
+  @override
+  String get eating => 'Eating';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get search_for_event => 'Search for Events';
+
+  @override
+  String get or => 'Or';
 }

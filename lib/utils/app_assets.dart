@@ -38,4 +38,10 @@ class AppAssets{
   static const String selectedHome = 'assets/images/selected_home.png';
   static const String selectedMap = 'assets/images/selected_map.png';
   static const String selectedProfilePerson = 'assets/images/selected_profile_person.png';
+  static const String searchIcon = 'assets/images/search_icon.png';
+  static const String emailIcon = 'assets/images/email_icon.png';
+  static const String passwordIcon = 'assets/images/password_icon.png';
+  static const String personLoginIcon = 'assets/images/person.png';
+  static const String googleIcon = 'assets/images/google_icon.png';
+  static const String loginLogo = 'assets/images/login_logo.png';
 }

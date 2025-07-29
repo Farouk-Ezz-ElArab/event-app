@@ -88,5 +88,15 @@
   "map": "Map",
   "love": "Love",
   "profile": "Profile",
-  "favorites": "Favorites"
+  "favorites": "Favorites",
+  "welcome_back": "Welcome Back✨",
+  "meeting": "Meeting",
+  "gaming": "Gaming",
+  "workshop": "WorkShop",
+  "exhibition": "Exhibition",
+  "holiday": "Holiday",
+  "eating": "Eating",
+  "all": "All",
+  "search_for_event": "Search for Events",
+  "or": "Or"
 }

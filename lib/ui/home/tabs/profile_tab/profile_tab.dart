@@ -4,10 +4,12 @@ import 'package:event_app/utils/app_assets.dart';
 import 'package:event_app/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../l10n/app_localizations.dart';
 import '../../../../providers/app_language_provider.dart';
 import '../../../../providers/app_theme_provider.dart';
 import '../../../../utils/app_colors.dart';
+import '../../widgets/custom_elevated_button.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -24,6 +26,7 @@ class _ProfileTabState extends State<ProfileTab> {
     var themeProvider = Provider.of<AppThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        //automaticallyImplyLeading: false,
         toolbarHeight: screenSize.height * 0.2,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -129,28 +132,20 @@ class _ProfileTabState extends State<ProfileTab> {
               ),
             ),
             Spacer(),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenSize.width * 0.04,
-                  vertical: screenSize.height * 0.015,
-                ),
-                backgroundColor: AppColors.redColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)
-                )
-              ),
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(Icons.logout, color: AppColors.whiteColor, size: 30),
-                  SizedBox(width: screenSize.width * 0.02,),
-                  Text(
-                    AppLocalizations.of(context)!.logout,
-                    style: AppStyles.regular20White,
-                  ),
-                ],
-              ),
+            CustomElevatedButton(
+              borderColor: AppColors.redColor,
+              rowMainAxesAlignment: MainAxisAlignment.start,
+              leadingIcon: Icon(
+                  Icons.logout, color: AppColors.whiteColor, size: 30),
+              buttonTextStyle: AppStyles.regular20White,
+              buttonColor: AppColors.redColor,
+              buttonText: AppLocalizations.of(
+                context,
+              )!.logout,
+              onPressed: () {
+                //TODO: logout
+                //TODO: Navigate to login screen
+              },
             ),
             SizedBox(height: screenSize.height * 0.012,)
           ],
