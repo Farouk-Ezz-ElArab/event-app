@@ -301,4 +301,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get or => 'أو';
+
+  @override
+  String get event_added_successfully => 'تم اضافة الحدث بنجاح';
+
+  @override
+  String get no_events_yet => 'لا يوجد احداث بعد';
+
+  @override
+  String get please_choose_time => 'برجاء اختيار الوقت';
+
+  @override
+  String get please_choose_date => 'برجاء اختيار التاريخ';
 }

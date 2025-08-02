@@ -1,14 +1,18 @@
 import 'package:event_app/l10n/app_localizations.dart';
 import 'package:event_app/providers/app_language_provider.dart';
+import 'package:event_app/ui/authentication/login/google_login.dart';
 import 'package:event_app/ui/home/widgets/custom_elevated_button.dart';
 import 'package:event_app/ui/home/widgets/custom_text_field.dart';
 import 'package:event_app/utils/app_assets.dart';
 import 'package:event_app/utils/app_colors.dart';
 import 'package:event_app/utils/app_routes.dart';
 import 'package:event_app/utils/app_styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+
+import '../../../utils/alert_dialog.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -183,7 +187,7 @@ class LoginScreen extends StatelessWidget {
                           context,
                         )!.login_with_google,
                         onPressed: () {
-                          //TODO: navigate to login with google
+                          GoogleLogin().signInWithGoogle(context);
                         },
                       ),
                     ],
@@ -236,9 +240,64 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  login(BuildContext context) {
+  login(BuildContext context) async {
     if (formKey.currentState?.validate() == true) {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.homeScreenRouteName);
+      //todo show loading
+      DialogUtils.showLoading(context: context, loadingText: 'Login...');
+      try {
+        final credential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+              email: emailController.text,
+              password: passwordController.text,
+            );
+        //todo: hide loading
+        DialogUtils.hideLoading(context: context);
+        //todo show message
+        DialogUtils.showMessage(
+          context: context,
+          message: 'Login Successfully',
+          title: 'Success',
+          postActionName: 'Next',
+          posAction: () {
+            Navigator.of(
+              context,
+            ).pushReplacementNamed(AppRoutes.homeScreenRouteName);
+          },
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'invalid-credential') {
+          //todo: hide loading
+          DialogUtils.hideLoading(context: context);
+          //todo show message
+          DialogUtils.showMessage(
+            context: context,
+            message:
+                'The supplied auth credential is incorrect, malformed or has expired.',
+            title: 'Error',
+            postActionName: 'Ok',
+          );
+        } else if (e.code == 'network-request-failed') {
+          //todo: hide loading
+          DialogUtils.hideLoading(context: context);
+          //todo show message
+          DialogUtils.showMessage(
+            context: context,
+            message: 'No internet Connection.',
+            title: 'Error',
+            postActionName: 'Ok',
+          );
+        }
+      } catch (e) {
+        //todo: hide loading
+        DialogUtils.hideLoading(context: context);
+        //todo show message
+        DialogUtils.showMessage(
+          context: context,
+          message: e.toString(),
+          title: 'Error',
+          postActionName: 'Ok',
+        );
+      }
     }
   }
 }

@@ -15,8 +15,10 @@ class FirebaseUtils {
         );
   }
 
-  static void addEventToFirebase() {
+  static Future<void> addEventToFireStore(Event event) {
     CollectionReference<Event> eventsCollection = getEventCollection();
-    DocumentReference<Event> documentReference = eventsCollection.doc('12');
+    DocumentReference<Event> documentReference = eventsCollection.doc();
+    event.id = documentReference.id;
+    return documentReference.set(event);
   }
 }

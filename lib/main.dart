@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_app/providers/app_theme_provider.dart';
+import 'package:event_app/providers/event_list_provider.dart';
 import 'package:event_app/ui/authentication/login/login_screen.dart';
 import 'package:event_app/ui/authentication/register/register_screen.dart';
 import 'package:event_app/ui/home/add_event/add_event.dart';
@@ -25,6 +26,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => AppLanguageProvider()),
         ChangeNotifierProvider(create: (context) => AppThemeProvider()),
+        ChangeNotifierProvider(create: (context) => EventsListProvider()),
       ],
       child: MyApp(),
     ),
@@ -39,13 +41,13 @@ class MyApp extends StatelessWidget {
     var languageProvider = Provider.of<AppLanguageProvider>(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.homeScreenRouteName,
+      initialRoute: AppRoutes.preIntroScreenRouteName,
       routes: {
-        AppRoutes.homeScreenRouteName: (context) => HomeScreen(),
-        AppRoutes.loginScreenRouteName: (context) => LoginScreen(),
-        AppRoutes.registerScreenRouteName: (context) => RegisterScreen(),
         AppRoutes.preIntroScreenRouteName: (context) => PreIntroScreen(),
         AppRoutes.introScreenRouteName: (context) => IntroScreenDemo(),
+        AppRoutes.loginScreenRouteName: (context) => LoginScreen(),
+        AppRoutes.homeScreenRouteName: (context) => HomeScreen(),
+        AppRoutes.registerScreenRouteName: (context) => RegisterScreen(),
         AppRoutes.addEventScreenRouteName: (context) => AddEvent(),
       },
       locale: Locale(languageProvider.appLanguage),

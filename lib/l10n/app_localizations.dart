@@ -673,6 +673,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Or'**
   String get or;
+
+  /// No description provided for @event_added_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Event added successfully'**
+  String get event_added_successfully;
+
+  /// No description provided for @no_events_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No events yet'**
+  String get no_events_yet;
+
+  /// No description provided for @please_choose_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose time'**
+  String get please_choose_time;
+
+  /// No description provided for @please_choose_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose date'**
+  String get please_choose_date;
 }
 
 class _AppLocalizationsDelegate

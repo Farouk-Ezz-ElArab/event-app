@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:event_app/firebase_utiles.dart';
 import 'package:event_app/l10n/app_localizations.dart';
+import 'package:event_app/model/events.dart';
 import 'package:event_app/providers/app_theme_provider.dart';
 import 'package:event_app/ui/home/add_event/widgets/date_or_time_widget.dart';
 import 'package:event_app/ui/home/widgets/custom_elevated_button.dart';
@@ -8,8 +10,10 @@ import 'package:event_app/utils/app_assets.dart';
 import 'package:event_app/utils/app_colors.dart';
 import 'package:event_app/utils/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
+import '../../../providers/event_list_provider.dart';
 import '../tabs/home_tab/widget/event_tab_item.dart';
 
 class AddEvent extends StatefulWidget {
@@ -21,6 +25,7 @@ class AddEvent extends StatefulWidget {
 
 class _AddEventState extends State<AddEvent> {
   int selectedIndex = 0;
+  bool isSent = false;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   var formKey = GlobalKey<FormState>();
@@ -28,12 +33,16 @@ class _AddEventState extends State<AddEvent> {
   String? formatedDate = '';
   TimeOfDay? selectedTime;
   String formatedTime = '';
+  String selectedImage = '';
+  String selectedEventName = '';
+  late EventsListProvider eventsListProvider;
 
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<AppThemeProvider>(context);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    eventsListProvider = Provider.of<EventsListProvider>(context);
 
     List<String> eventsNameList = [
       AppLocalizations.of(context)!.sport,
@@ -57,6 +66,8 @@ class _AddEventState extends State<AddEvent> {
       AppAssets.holidayImage,
       AppAssets.eatingImage,
     ];
+    selectedImage = eventImagesList[selectedIndex];
+    selectedEventName = eventsNameList[selectedIndex];
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -78,7 +89,7 @@ class _AddEventState extends State<AddEvent> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Image.asset(eventImagesList[selectedIndex]),
+                  child: Image.asset(selectedImage),
                 ),
                 SizedBox(height: height * 0.02),
                 SizedBox(
@@ -174,6 +185,20 @@ class _AddEventState extends State<AddEvent> {
                         //'${selectedDate?.day}/${selectedDate?.month}/${selectedDate?.year}',
                         onChooseDateOrTimeClick: chooseDate,
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Visibility(
+                            visible: selectedDate == null && isSent,
+                            child: Text(
+                              AppLocalizations.of(context)!.please_choose_date,
+                              style: AppStyles.bold14Primary.copyWith(
+                                color: AppColors.redColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       DateOrTimeWidget(
                         iconDateOrTime: AppAssets.timeIcon,
                         eventDateOrTime: AppLocalizations.of(
@@ -183,6 +208,20 @@ class _AddEventState extends State<AddEvent> {
                             ? AppLocalizations.of(context)!.choose_time
                             : formatedTime,
                         onChooseDateOrTimeClick: chooseTime,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Visibility(
+                            visible: selectedTime == null && isSent,
+                            child: Text(
+                              AppLocalizations.of(context)!.please_choose_time,
+                              style: AppStyles.bold14Primary.copyWith(
+                                color: AppColors.redColor,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: height * 0.02),
                       Text(
@@ -256,10 +295,35 @@ class _AddEventState extends State<AddEvent> {
   }
 
   void addEvent() {
-    if (formKey.currentState!.validate()) {
-      //todo: add event, Firebase fire store (DB)
-
-      Navigator.pop(context);
+    isSent = true;
+    setState(() {});
+    if (formKey.currentState!.validate() && selectedTime != null &&
+        selectedDate != null) {
+      Event event = Event(
+        dateTime: selectedDate!,
+        description: descriptionController.text,
+        title: titleController.text,
+        eventName: selectedEventName,
+        image: selectedImage,
+        time: formatedTime,
+      );
+      FirebaseUtils.addEventToFireStore(event).timeout(
+        Duration(milliseconds: 500),
+        onTimeout: () {
+          //todo: snack bar, alert dialog, toast
+          Fluttertoast.showToast(
+            msg: AppLocalizations.of(context)!.event_added_successfully,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: AppColors.whiteColor,
+            textColor: AppColors.primaryLight,
+            fontSize: 16.0,
+          );
+          eventsListProvider.getAllEvents();
+          Navigator.pop(context);
+        },
+      );
     }
   }
 }

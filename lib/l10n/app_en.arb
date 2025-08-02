@@ -98,5 +98,9 @@
   "eating": "Eating",
   "all": "All",
   "search_for_event": "Search for Events",
-  "or": "Or"
+  "or": "Or",
+  "event_added_successfully": "Event added successfully",
+  "no_events_yet": "No events yet",
+  "please_choose_time": "Please choose time",
+  "please_choose_date": "Please choose date"
 }

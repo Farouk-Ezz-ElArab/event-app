@@ -44,4 +44,6 @@ class AppAssets{
   static const String personLoginIcon = 'assets/images/person.png';
   static const String googleIcon = 'assets/images/google_icon.png';
   static const String loginLogo = 'assets/images/login_logo.png';
+  static const String selectedFavoritePr =
+      'assets/images/selected_favorite_pr.png';
 }

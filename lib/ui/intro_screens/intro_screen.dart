@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:event_app/l10n/app_localizations.dart';
 import 'package:event_app/utils/app_assets.dart';
 import 'package:event_app/utils/app_colors.dart';
@@ -116,7 +115,7 @@ class _IntroScreenDemoState extends State<IntroScreenDemo> {
       onDone: () {
         Navigator.of(
           context,
-        ).pushReplacementNamed(AppRoutes.homeScreenRouteName);
+        ).pushReplacementNamed(AppRoutes.loginScreenRouteName);
       },
       showSkipButton: true,
       skip: Text(
@@ -126,7 +125,7 @@ class _IntroScreenDemoState extends State<IntroScreenDemo> {
       onSkip: () {
         Navigator.of(
           context,
-        ).pushReplacementNamed(AppRoutes.homeScreenRouteName);
+        ).pushReplacementNamed(AppRoutes.loginScreenRouteName);
       },
       dotsContainerDecorator: BoxDecoration(
         borderRadius: BorderRadius.circular(16),

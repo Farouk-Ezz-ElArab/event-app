@@ -301,4 +301,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get or => 'Or';
+
+  @override
+  String get event_added_successfully => 'Event added successfully';
+
+  @override
+  String get no_events_yet => 'No events yet';
+
+  @override
+  String get please_choose_time => 'Please choose time';
+
+  @override
+  String get please_choose_date => 'Please choose date';
 }
