@@ -29,7 +29,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
     });
   }
 
-  @@override
+  @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery
         .of(context)

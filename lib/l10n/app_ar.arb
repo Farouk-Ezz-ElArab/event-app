@@ -102,6 +102,10 @@
   "event_added_successfully": "تم اضافة الحدث بنجاح",
   "no_events_yet": "لا يوجد احداث بعد",
   "please_choose_time": "برجاء اختيار الوقت",
-  "please_choose_date": "برجاء اختيار التاريخ"
+  "please_choose_date": "برجاء اختيار التاريخ",
+  "delete_event": "حذف الحدث",
+  "delete_event_confirmation": "هل أنت متأكد من حذف هذا الحدث؟",
+  "event_updated_successfully": "تم تحديث الحدث بنجاح",
+  "event_deleted_successfully": "تم حذف الحدث بنجاح"
 
 }

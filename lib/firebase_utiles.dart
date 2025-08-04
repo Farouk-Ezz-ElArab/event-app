@@ -21,4 +21,20 @@ class FirebaseUtils {
     event.id = documentReference.id;
     return documentReference.set(event);
   }
+
+// Add these methods to your FirebaseUtils class
+
+  static Future<void> updateEventInFireStore(Event event) async {
+    CollectionReference<Event> eventsCollection = getEventCollection();
+    DocumentReference<Event> eventDoc = eventsCollection.doc(event.id);
+
+    return eventDoc.set(event);
+  }
+
+  static Future<void> deleteEventFromFireStore(String eventId) async {
+    CollectionReference<Event> eventsCollection = getEventCollection();
+    DocumentReference<Event> eventDoc = eventsCollection.doc(eventId);
+
+    return eventDoc.delete();
+  }
 }

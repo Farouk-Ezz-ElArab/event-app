@@ -230,9 +230,7 @@ class RegisterScreen extends StatelessWidget {
   }
 
   register(BuildContext context) async {
-    int flag = 0;
     if (formKey.currentState?.validate() == true) {
-      //todo show loading
       DialogUtils.showLoading(context: context, loadingText: 'loading...');
       try {
         final credential = await FirebaseAuth.instance
@@ -240,9 +238,7 @@ class RegisterScreen extends StatelessWidget {
           email: emailController.text,
           password: passwordController.text,
         );
-        //todo: hide loading
         DialogUtils.hideLoading(context: context);
-        //todo show message
         DialogUtils.showMessage(
             context: context,
             message: 'Register Successfully',
@@ -256,7 +252,6 @@ class RegisterScreen extends StatelessWidget {
             }
         );
       } on FirebaseAuthException catch (e) {
-        flag++;
         if (e.code == 'weak-password') {
           DialogUtils.hideLoading(context: context);
           DialogUtils.showMessage(

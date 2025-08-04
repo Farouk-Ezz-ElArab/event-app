@@ -313,4 +313,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get please_choose_date => 'Please choose date';
+
+  @override
+  String get delete_event => 'Delete Event';
+
+  @override
+  String get delete_event_confirmation =>
+      'Are you sure you want to delete this event?';
+
+  @override
+  String get event_updated_successfully => 'Event updated successfully';
+
+  @override
+  String get event_deleted_successfully => 'Event deleted successfully';
 }

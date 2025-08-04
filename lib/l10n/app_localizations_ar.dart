@@ -313,4 +313,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get please_choose_date => 'برجاء اختيار التاريخ';
+
+  @override
+  String get delete_event => 'حذف الحدث';
+
+  @override
+  String get delete_event_confirmation => 'هل أنت متأكد من حذف هذا الحدث؟';
+
+  @override
+  String get event_updated_successfully => 'تم تحديث الحدث بنجاح';
+
+  @override
+  String get event_deleted_successfully => 'تم حذف الحدث بنجاح';
 }
