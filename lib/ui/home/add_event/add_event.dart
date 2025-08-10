@@ -134,7 +134,8 @@ class _AddEventState extends State<AddEvent> {
                       CustomTextField(
                         validator: (text) {
                           if (text == null || text.trim().isEmpty) {
-                            return 'please Enter Event title';
+                            return AppLocalizations.of(context)!
+                                .please_enter_event_title;
                           }
                           return null;
                         },
@@ -159,7 +160,8 @@ class _AddEventState extends State<AddEvent> {
                       CustomTextField(
                         validator: (text) {
                           if (text == null || text.trim().isEmpty) {
-                            return 'please Enter Event Description';
+                            return AppLocalizations.of(context)!
+                                .please_enter_event_description;
                           }
                           return null;
                         },

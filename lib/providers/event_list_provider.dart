@@ -100,6 +100,30 @@ class EventsListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateEvent(Event event) {
+    FirebaseUtils.getEventCollection()
+        .doc(event.id)
+        .update(event.toFireStore())
+        .timeout(
+          Duration(milliseconds: 500),
+          onTimeout: () {
+            Fluttertoast.showToast(
+              msg: 'Event Updated successfully',
+              // msg: AppLocalizations.of(context)!.event_added_successfully,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: AppColors.greenColor,
+              textColor: AppColors.whiteColor,
+              fontSize: 16.0,
+            );
+          },
+        );
+    selectedIndex == 0 ? getAllEvents() : getFilterEvents();
+    getFilterEvents();
+    notifyListeners();
+  }
+
   void getAllFavoriteEvents() async {
     var querySnapshot = await FirebaseUtils.getEventCollection().get();
     favoriteEventList = querySnapshot.docs.map((doc) => doc.data()).toList();

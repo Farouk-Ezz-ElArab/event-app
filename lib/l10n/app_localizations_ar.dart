@@ -325,4 +325,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get event_deleted_successfully => 'تم حذف الحدث بنجاح';
+
+  @override
+  String get please_enter_event_description => 'برجاء ادخال وصف للحدث';
+
+  @override
+  String get please_enter_event_title => 'برجاء ادخال عنوان للحدث';
 }

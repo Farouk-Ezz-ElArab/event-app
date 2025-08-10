@@ -106,6 +106,8 @@
   "delete_event": "حذف الحدث",
   "delete_event_confirmation": "هل أنت متأكد من حذف هذا الحدث؟",
   "event_updated_successfully": "تم تحديث الحدث بنجاح",
-  "event_deleted_successfully": "تم حذف الحدث بنجاح"
+  "event_deleted_successfully": "تم حذف الحدث بنجاح",
+  "please_enter_event_description": "برجاء ادخال وصف للحدث",
+  "please_enter_event_title": "برجاء ادخال عنوان للحدث"
 
 }

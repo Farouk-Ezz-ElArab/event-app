@@ -11,8 +11,10 @@ class CustomElevatedButton extends StatelessWidget {
   Widget? leadingIcon;
   MainAxisAlignment rowMainAxesAlignment;
   bool isLocationButton;
+  bool isDateAndTime;
 
   CustomElevatedButton({
+    this.isDateAndTime = false,
     this.isLocationButton = false,
     this.rowMainAxesAlignment = MainAxisAlignment.center,
     super.key,
@@ -73,7 +75,9 @@ class CustomElevatedButton extends StatelessWidget {
                   style: buttonTextStyle ?? AppStyles.medium20White,
                 ),
                 Spacer(),
-                Icon(Icons.arrow_forward_ios, color: AppColors.primaryLight),
+                Icon(Icons.arrow_forward_ios, color: isDateAndTime
+                    ? AppColors.transparentColor
+                    : AppColors.primaryLight),
               ],
             ),
     );

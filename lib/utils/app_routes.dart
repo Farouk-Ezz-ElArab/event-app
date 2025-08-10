@@ -6,4 +6,5 @@ class AppRoutes{
   static const String registerScreenRouteName = 'register_screen';
   static const String addEventScreenRouteName = 'add_event_screen';
   static const String editEventScreenRouteName = 'edit_event_screen';
+  static const String eventDetailsScreenRouteName = 'event_details_screen';
 }

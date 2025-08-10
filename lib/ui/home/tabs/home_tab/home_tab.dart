@@ -1,10 +1,10 @@
 import 'package:event_app/l10n/app_localizations.dart';
 import 'package:event_app/providers/event_list_provider.dart';
-import 'package:event_app/ui/home/edit_event/edit_event_screen.dart';
 import 'package:event_app/ui/home/tabs/home_tab/widget/event_item.dart';
 import 'package:event_app/ui/home/tabs/home_tab/widget/event_tab_item.dart';
 import 'package:event_app/utils/app_assets.dart';
 import 'package:event_app/utils/app_colors.dart';
+import 'package:event_app/utils/app_routes.dart';
 import 'package:event_app/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -148,14 +148,9 @@ class _HomeTabState extends State<HomeTab> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditEventScreen(
-                            event: eventListProvider.filterEventsList[index],
-                          ),
-                        ),
-                      );
+                      Navigator.pushNamed(
+                          context, AppRoutes.eventDetailsScreenRouteName,
+                          arguments: eventListProvider.filterEventsList[index]);
                     },
                     child: EventItem(
                       event: eventListProvider.filterEventsList[index],

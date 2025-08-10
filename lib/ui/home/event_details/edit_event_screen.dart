@@ -17,16 +17,13 @@ import '../../../providers/event_list_provider.dart';
 import '../tabs/home_tab/widget/event_tab_item.dart';
 
 class EditEventScreen extends StatefulWidget {
-  final Event event;
-
-  EditEventScreen({super.key, required this.event});
+  EditEventScreen({super.key});
 
   @override
   State<EditEventScreen> createState() => _EditEventScreenState();
 }
 
 class _EditEventScreenState extends State<EditEventScreen> {
-  int selectedIndex = 0;
   bool isSent = false;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -39,45 +36,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   String selectedEventName = '';
   late EventsListProvider eventsListProvider;
 
-  @override
-  void initState() {
-    super.initState();
-    // Initialize fields with existing event data
-    titleController.text = widget.event.title;
-    descriptionController.text = widget.event.description;
-    selectedDate = widget.event.dateTime;
-    formatedDate = DateFormat('dd/MM/yyyy').format(widget.event.dateTime);
-
-    // Parse the time from the event
-    try {
-      // Assuming the time is stored in a format that can be parsed
-      // You might need to adjust this based on your time format
-      final timeParts = widget.event.time.split(':');
-      if (timeParts.length >= 2) {
-        int hour = int.parse(timeParts[0]);
-        int minute = int.parse(
-          timeParts[1].split(' ')[0],
-        ); // Remove AM/PM if present
-
-        // Handle AM/PM if your time format includes it
-        if (widget.event.time.contains('PM') && hour != 12) {
-          hour += 12;
-        } else if (widget.event.time.contains('AM') && hour == 12) {
-          hour = 0;
-        }
-
-        selectedTime = TimeOfDay(hour: hour, minute: minute);
-        formatedTime = widget.event.time;
-      }
-    } catch (e) {
-      // If parsing fails, default to current time
-      selectedTime = TimeOfDay.now();
-      formatedTime = selectedTime!.format(context);
-    }
-
-    selectedImage = widget.event.image;
-    selectedEventName = widget.event.eventName;
-  }
+  late int selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +56,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
       AppLocalizations.of(context)!.holiday,
       AppLocalizations.of(context)!.eating,
     ];
-
     List<String> eventImagesList = [
       AppAssets.sportImage,
       AppAssets.birthdayImage,
@@ -110,12 +68,22 @@ class _EditEventScreenState extends State<EditEventScreen> {
       AppAssets.eatingImage,
     ];
 
-    // Find the current selected index based on the event's category
-    selectedIndex = eventImagesList.indexOf(selectedImage);
-    if (selectedIndex == -1) selectedIndex = 0;
+    final selectedEvent = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as Event;
 
-    selectedImage = eventImagesList[selectedIndex];
-    selectedEventName = eventsNameList[selectedIndex];
+    if (selectedDate == null && selectedTime == null) {
+      titleController.text = selectedEvent.title;
+      descriptionController.text = selectedEvent.description;
+      selectedDate = selectedEvent.dateTime;
+      formatedDate = DateFormat('dd/MM/yyyy').format(selectedDate!);
+      selectedTime = _parseTimeOfDay(selectedEvent.time);
+      formatedTime = selectedTime!.format(context);
+      selectedIndex = eventsNameList.indexOf(selectedEvent.eventName);
+      selectedImage = eventImagesList[selectedIndex];
+      selectedEventName = eventsNameList[selectedIndex];
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -123,16 +91,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
         backgroundColor: AppColors.transparentColor,
         title: Text(
           AppLocalizations.of(context)!.edit_event,
-          // You'll need to add this to your localizations
           style: AppStyles.medium20Primary,
         ),
-        actions: [
-          // Add delete button
-          IconButton(
-            onPressed: () => _showDeleteConfirmation(context),
-            icon: Icon(Icons.delete_outline, color: AppColors.redColor),
-          ),
-        ],
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: width * 0.03),
@@ -156,14 +116,18 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          selectedIndex = index;
-                          setState(() {});
+                          setState(() {
+                            selectedIndex = index;
+                            selectedImage = eventImagesList[index];
+                            selectedEventName = eventsNameList[index];
+                          });
                         },
                         child: EventTabItem(
                           borderColor: AppColors.primaryLight,
-                          selectedTextStyle: Theme.of(
-                            context,
-                          ).textTheme.labelMedium!,
+                          selectedTextStyle: Theme
+                              .of(context)
+                              .textTheme
+                              .labelMedium!,
                           unSelectedTextStyle: AppStyles.medium16Primary,
                           isSelected: selectedIndex == index,
                           eventName: eventsNameList[index],
@@ -171,9 +135,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                         ),
                       );
                     },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(width: width * 0.02);
-                    },
+                    separatorBuilder: (context, index) =>
+                        SizedBox(width: width * 0.02),
                     itemCount: eventsNameList.length,
                   ),
                 ),
@@ -191,12 +154,13 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       CustomTextField(
                         validator: (text) {
                           if (text == null || text.trim().isEmpty) {
-                            return 'please Enter Event title';
+                            return AppLocalizations.of(context)!
+                                .please_enter_event_title;
                           }
                           return null;
                         },
-                        boarderSideColor:
-                            ThemeMode.dark == themeProvider.appTheme
+                        boarderSideColor: ThemeMode.dark ==
+                            themeProvider.appTheme
                             ? AppColors.primaryLight
                             : AppColors.greyColor,
                         hintStyle: Theme.of(context).textTheme.bodySmall,
@@ -216,68 +180,38 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       CustomTextField(
                         validator: (text) {
                           if (text == null || text.trim().isEmpty) {
-                            return 'please Enter Event Description';
+                            return AppLocalizations.of(context)!
+                                .please_enter_event_description;
                           }
                           return null;
                         },
-                        boarderSideColor:
-                            ThemeMode.dark == themeProvider.appTheme
+                        boarderSideColor: ThemeMode.dark ==
+                            themeProvider.appTheme
                             ? AppColors.primaryLight
                             : AppColors.greyColor,
                         hintStyle: Theme.of(context).textTheme.bodySmall,
                         maxLines: 4,
                         controller: descriptionController,
-                        hintText: AppLocalizations.of(
-                          context,
-                        )!.event_description,
+                        hintText: AppLocalizations.of(context)!
+                            .event_description,
                       ),
                       DateOrTimeWidget(
                         iconDateOrTime: AppAssets.dateIcon,
-                        eventDateOrTime: AppLocalizations.of(
-                          context,
-                        )!.event_date,
+                        eventDateOrTime: AppLocalizations.of(context)!
+                            .event_date,
                         chooseDateOrTime: selectedDate == null
                             ? AppLocalizations.of(context)!.choose_date
                             : formatedDate!,
                         onChooseDateOrTimeClick: chooseDate,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Visibility(
-                            visible: selectedDate == null && isSent,
-                            child: Text(
-                              AppLocalizations.of(context)!.please_choose_date,
-                              style: AppStyles.bold14Primary.copyWith(
-                                color: AppColors.redColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                       DateOrTimeWidget(
                         iconDateOrTime: AppAssets.timeIcon,
-                        eventDateOrTime: AppLocalizations.of(
-                          context,
-                        )!.event_time,
+                        eventDateOrTime: AppLocalizations.of(context)!
+                            .event_time,
                         chooseDateOrTime: selectedTime == null
                             ? AppLocalizations.of(context)!.choose_time
                             : formatedTime,
                         onChooseDateOrTimeClick: chooseTime,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Visibility(
-                            visible: selectedTime == null && isSent,
-                            child: Text(
-                              AppLocalizations.of(context)!.please_choose_time,
-                              style: AppStyles.bold14Primary.copyWith(
-                                color: AppColors.redColor,
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                       SizedBox(height: height * 0.02),
                       Text(
@@ -303,15 +237,44 @@ class _EditEventScreenState extends State<EditEventScreen> {
                         buttonTextStyle: AppStyles.medium16Primary,
                         buttonColor: AppColors.transparentColor,
                         buttonText: AppLocalizations.of(context)!.cairo_egypt,
-                        onPressed: () {
-                          //todo: map screen
-                        },
+                        onPressed: () {},
                         borderColor: AppColors.primaryLight,
                       ),
                       SizedBox(height: height * 0.02),
                       CustomElevatedButton(
                         buttonText: AppLocalizations.of(context)!.update_event,
-                        onPressed: updateEvent,
+                        onPressed: () {
+                          isSent = true;
+                          setState(() {});
+                          if (formKey.currentState!.validate()) {
+                            Event event = Event(
+                              id: selectedEvent.id,
+                              dateTime: selectedDate!,
+                              description: descriptionController.text,
+                              title: titleController.text,
+                              eventName: selectedEventName,
+                              image: selectedImage,
+                              time: selectedTime!.format(context),
+                            );
+                            FirebaseUtils.updateEventInFireStore(event).timeout(
+                              Duration(milliseconds: 500),
+                              onTimeout: () {
+                                Fluttertoast.showToast(
+                                  msg: AppLocalizations.of(context)!
+                                      .event_updated_successfully,
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: AppColors.whiteColor,
+                                  textColor: AppColors.primaryLight,
+                                  fontSize: 16.0,
+                                );
+                                eventsListProvider.getAllEvents();
+                                Navigator.pop(context, event);
+                              },
+                            );
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -350,102 +313,29 @@ class _EditEventScreenState extends State<EditEventScreen> {
     setState(() {});
   }
 
-  void updateEvent() {
-    isSent = true;
-    setState(() {});
-    if (formKey.currentState!.validate() &&
-        selectedTime != null &&
-        selectedDate != null) {
-      // Create updated event with the same ID
-      Event updatedEvent = Event(
-        id: widget.event.id,
-        // Preserve the original ID
-        dateTime: selectedDate!,
-        description: descriptionController.text,
-        title: titleController.text,
-        eventName: selectedEventName,
-        image: selectedImage,
-        time: formatedTime,
-        isFavorite: widget.event.isFavorite, // Preserve favorite status
-      );
+  TimeOfDay _parseTimeOfDay(String timeString) {
+    try {
+      String cleanTime = timeString.trim().toLowerCase();
+      bool isPM = cleanTime.contains('pm');
+      bool isAM = cleanTime.contains('am');
+      cleanTime = cleanTime.replaceAll(RegExp(r'[^\d:]'), '');
+      List<String> parts = cleanTime.split(':');
 
-      // Update event in Firebase
-      FirebaseUtils.updateEventInFireStore(updatedEvent).timeout(
-        Duration(milliseconds: 500),
-        onTimeout: () {
-          Fluttertoast.showToast(
-            msg: AppLocalizations.of(context)!.event_updated_successfully,
-            // Add this to localizations
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: AppColors.whiteColor,
-            textColor: AppColors.primaryLight,
-            fontSize: 16.0,
-          );
-          eventsListProvider.getAllEvents();
-          Navigator.pop(context);
-        },
-      );
+      if (parts.length >= 2) {
+        int hour = int.parse(parts[0]);
+        int minute = int.parse(parts[1]);
+
+        if (isPM && hour != 12) {
+          hour += 12;
+        } else if (isAM && hour == 12) {
+          hour = 0;
+        }
+        return TimeOfDay(hour: hour, minute: minute);
+      }
+    } catch (e) {
+      print('Error :$timeString, Error: $e');
     }
-  }
 
-  void _showDeleteConfirmation(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.delete_event),
-          // Add to localizations
-          content: Text(
-            AppLocalizations.of(context)!.delete_event_confirmation,
-          ),
-          // Add to localizations
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(AppLocalizations.of(context)!.cancel),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _deleteEvent();
-              },
-              child: Text(
-                AppLocalizations.of(context)!.delete,
-                style: TextStyle(color: AppColors.redColor),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _deleteEvent() {
-    FirebaseUtils.deleteEventFromFireStore(widget.event.id).timeout(
-      Duration(milliseconds: 500),
-      onTimeout: () {
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.event_deleted_successfully,
-          // Add to localizations
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: AppColors.whiteColor,
-          textColor: AppColors.redColor,
-          fontSize: 16.0,
-        );
-        eventsListProvider.getAllEvents();
-        Navigator.pop(context);
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    titleController.dispose();
-    descriptionController.dispose();
-    super.dispose();
+    return TimeOfDay.now();
   }
 }

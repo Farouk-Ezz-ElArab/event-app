@@ -5,7 +5,7 @@
 // import 'package:event_app/ui/authentication/login/login_screen.dart';
 // import 'package:event_app/ui/authentication/register/register_screen.dart';
 // import 'package:event_app/ui/home/add_event/add_event.dart';
-// import 'package:event_app/ui/home/edit_event/edit_event_screen.dart';
+// import 'package:event_app/ui/home/event_details/edit_event_screen.dart';
 // import 'package:event_app/ui/home/home_screen.dart';
 // import 'package:event_app/ui/intro_screens/intro_screen.dart';
 // import 'package:event_app/ui/intro_screens/pre_intro_screen.dart';
@@ -80,13 +80,13 @@
 // Alternative approach using route arguments
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_app/core/shared_preference.dart';
-import 'package:event_app/model/events.dart';
 import 'package:event_app/providers/app_theme_provider.dart';
 import 'package:event_app/providers/event_list_provider.dart';
 import 'package:event_app/ui/authentication/login/login_screen.dart';
 import 'package:event_app/ui/authentication/register/register_screen.dart';
 import 'package:event_app/ui/home/add_event/add_event.dart';
-import 'package:event_app/ui/home/edit_event/edit_event_screen.dart';
+import 'package:event_app/ui/home/event_details/edit_event_screen.dart';
+import 'package:event_app/ui/home/event_details/event_details_screen.dart';
 import 'package:event_app/ui/home/home_screen.dart';
 import 'package:event_app/ui/intro_screens/intro_screen.dart';
 import 'package:event_app/ui/intro_screens/pre_intro_screen.dart';
@@ -141,11 +141,9 @@ class MyApp extends StatelessWidget {
       initialRoute: AppRoutes.homeScreenRouteName,
       routes: {
         AppRoutes.homeScreenRouteName: (context) => HomeScreen(),
-        AppRoutes.editEventScreenRouteName: (context) {
-          final Event event =
-              ModalRoute.of(context)!.settings.arguments as Event;
-          return EditEventScreen(event: event);
-        },
+        AppRoutes.eventDetailsScreenRouteName: (context) =>
+            EventDetailsScreen(),
+        AppRoutes.editEventScreenRouteName: (context) => EditEventScreen(),
         AppRoutes.preIntroScreenRouteName: (context) => PreIntroScreen(),
         AppRoutes.introScreenRouteName: (context) => IntroScreenDemo(),
         AppRoutes.loginScreenRouteName: (context) => LoginScreen(),
