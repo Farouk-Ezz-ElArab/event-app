@@ -58,7 +58,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             onTap: () {
               FirebaseUtils.deleteEventFromFireStore(selectedEvent.id);
               //Navigator.popUntil(context, (route) => AppRoutes.homeScreenRouteName == route.settings.name,);
-              eventListProvider.getFilterEvents();
+              eventListProvider.getAllEvents();
               Navigator.pop(context);
             },
             child: Icon(Icons.delete, color: AppColors.redColor, size: 30),

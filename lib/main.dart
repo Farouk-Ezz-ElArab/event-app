@@ -138,13 +138,13 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.homeScreenRouteName,
+      initialRoute: AppRoutes.preIntroScreenRouteName,
       routes: {
+        AppRoutes.preIntroScreenRouteName: (context) => PreIntroScreen(),
         AppRoutes.homeScreenRouteName: (context) => HomeScreen(),
         AppRoutes.eventDetailsScreenRouteName: (context) =>
             EventDetailsScreen(),
         AppRoutes.editEventScreenRouteName: (context) => EditEventScreen(),
-        AppRoutes.preIntroScreenRouteName: (context) => PreIntroScreen(),
         AppRoutes.introScreenRouteName: (context) => IntroScreenDemo(),
         AppRoutes.loginScreenRouteName: (context) => LoginScreen(),
         AppRoutes.registerScreenRouteName: (context) => RegisterScreen(),
