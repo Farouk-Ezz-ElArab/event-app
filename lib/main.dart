@@ -16,7 +16,6 @@ import 'package:event_app/utils/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 import 'providers/app_language_provider.dart';

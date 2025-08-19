@@ -12,7 +12,6 @@ import 'package:event_app/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-
 import '../../../providers/event_list_provider.dart';
 import '../tabs/home_tab/widget/event_tab_item.dart';
 
